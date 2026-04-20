@@ -2,7 +2,11 @@
     include 'config.php';
     if(isset($_POST['btn'])){	
         $db->query('INSERT INTO etudiants(nom,prenom,filiere_id) VALUES("'.$_POST['nom'].'","'.$_POST['prenom'].'","'.$_POST['filiere'].'")');
-    }
+    }else if(isset($_POST['btn']) && $_POST['btn']=='update'){
+		$db->query('UPDATE member SET name="'.$_POST['name'].'", phone="'.$_POST['phone'].'", mail="'.$_POST['mail'].'" WHERE id="'.$_POST['id'].'"');
+	}
 
     header ('Location:index.php')
+
+    
 ?>
