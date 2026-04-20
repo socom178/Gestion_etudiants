@@ -1,0 +1,21 @@
+body{
+    padding: 0;
+    margin: 0;
+}
+form{
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgb(248, 248, 248);
+    background-color: gainsboro;
+    width: 40%;
+    margin-left: 30%;
+    margin-top: 20vh;
+}
+input{
+    width: 90%;
+    padding: 5px;
+    font-size: 15px;
+    border-radius: 8px;
+    margin-bottom: 1vh;
+    border: none;
+}
