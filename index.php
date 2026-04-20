@@ -11,7 +11,7 @@
         $nom='';
         $prenom='';
         $filiere_nom='';
-            include 'config.php';
+        include 'config.php';
 
         if(isset($_GET['task']) && $_GET['task']=='modif'){
             $tab=explode(';',$_GET['data']);
@@ -29,8 +29,8 @@
         <br>
         <label for="s">Filiere</label><br>
         <select name="filiere" id="">
-            <option value="SIL">SIL</option>
-            <option value="SI">SI</option>
+            <option value="1">SIL</option>
+            <option value="2">SI</option>
         </select>
         <br><br>
         <input type="submit" name="btn" value="Ajout">
@@ -40,7 +40,7 @@
     <table border="1">
         <?php
             include 'config.php';
-            $req=$db->query('SELECT * FROM etudiants , filieres WHERE etudiants.filiere_id=filieres.id');
+            $req=$db->query('SELECT * FROM etudiants , filieres WHERE etudiants.filiere_id=filieres.fil_id');
             if($req->rowcount()!=0){
                 while($dt=$req->fetch()){
                     $data = $dt['id'].';'.$dt['nom'].';'.$dt['prenom'].';'.$dt['filiere_nom'];
