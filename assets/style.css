@@ -1,0 +1,9 @@
+body{margin:0px; padding:0px;display: flex;}
+
+section:nth-child(1){margin:0 30px 0 0; background-color: #ACACAC;width: 15%; height: 100vh; position:fix; top:0; left:0;}
+
+form h2{margin-top:5vh; font-family:'Montserrat'; color:#0e00d3;}
+form input{width:200px; padding:10px; margin:0 10px 10px 0; border:1px solid #ACACAC; border-radius:5px; }
+form input[type=submit]{width:222px;}
+form select{width:222px; padding:10px; margin:0 10px 10px 0; border:1px solid #ACACAC; border-radius:5px; }
+form #text{width:456px;}
