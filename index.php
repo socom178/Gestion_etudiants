@@ -4,54 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gestion_etudiant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
-    <?php
-        $nom='';
-        $prenom='';
-        $filiere_nom='';
-        include 'config.php';
+    <section>
 
-        if(isset($_GET['task']) && $_GET['task']=='modif'){
-            $tab=explode(';',$_GET['data']);
-            $id=$tab[0];$nom=$tab[1];$prenom=$tab[2];$filiere=$tab[3];
-        }else if(isset($_GET['task']) && $_GET['task']=='supp'){
-            $db->query('DELETE FROM etudiants WHERE id="'.$_GET['id'].'"');
-        }
-    ?>
-    <form action="traitement.php" method="POST">
-        <label for="n">Nom</label><br>
-        <input type="text" name="nom" value="<?=$nom?>" id="n" placeholder="Entrez votre nom...">
-        <br>
-        <label for="p">Prenom</label><br>
-        <input type="text" name="prenom" value="<?=$prenom?>" id="p" placeholder="Entrez votre prenom...">
-        <br>
-        <label for="s">Filiere</label><br>
-        <select name="filiere" id="">
-            <option value="1">SIL</option>
-            <option value="2">SI</option>
-        </select>
-        <br><br>
-        <input type="submit" name="btn" value="Ajout">
-        <input type="submit" name="btn" value="update">
-        
-    </form>
-    <table border="1">
+    </section>
+    <section>
         <?php
             include 'config.php';
-            $req=$db->query('SELECT * FROM etudiants , filieres WHERE etudiants.filiere_id=filieres.fil_id');
-            if($req->rowcount()!=0){
-                while($dt=$req->fetch()){
-                    $data = $dt['id'].';'.$dt['nom'].';'.$dt['prenom'].';'.$dt['filiere_nom'];
-                    echo '<tr>';
-                    echo '<td><a href="index.php?task=modif&data='.$data.'" style="color:blue;font-weight:bold;margin:5px">modifier</a></td>';
-                    echo '<td><a href="index.php?task=supp&id='.$dt['id'].'" style="color:red;font-weight:bold;margin:5px">supprimer</a></td>';
-                    echo '<td>'.$dt['nom'].'</td><td>'.$dt['prenom'].'</td><td>'.$dt['filiere_nom'].'</td>';
-                    echo '</tr>';
-                }
+            $id=''; $nom=''; $prenom=''; $filiere='';
+            if(isset($_GET['task']) && $_GET['task']=='modif'){
+                $tab=explode(';',$_GET['data']);
+                $id=$tab[0];$nom=$tab[1];$prenom=$tab[2];$filiere=$tab[3];
             }
         ?>
-</table>
+        <h2>ENREGISTREMENT ETUDIANT</h2>
+        <div id="error-message"></div>
+        <form method="POST" id="form" action="traitement.php">
+            <input type="hidden" name="id" id="" value="<?=$id?>" />
+            <input type="text" name="nom" id="nom" value="<?=$nom?>" placeholder="Entrez le nom..." />
+            <input type="tel" name="prenom"  id="prenom" value="<?=$prenom?>" placeholder="Entrez le prenom..." /><br />
+            <select name="filiere" id="text">
+                <?php
+                    $rq1=$db->query('SELECT * FROM filieres');
+                    echo '<option value="" selected disabled>-- filiere --</option>';
+                    while($fil = $rq1->fetch()){
+                        echo '<option value="'.$fil['fil_id'].'">'.$fil['filiere_nom'].'</option>';
+                    }
+                ?>
+            </select>
+            <br />
+            <?php
+                if(isset($_GET['task']) && $_GET['task']=='modif'){
+                    $btn='<input type="submit" name="btn" value="Modifier" id="text" />';
+                }else{
+                    $btn='<input type="submit" name="btn" value="Enregistrer" id="text" />';
+                }
+                echo $btn;
+            ?>
+        </form>
+        <h2>LISTE DES ETUDIANTS</h2>
+        <table  border="0" cellspacing="1" cellpadding="8" width="700" bgcolor="#e0e0e0">
+            <?php
+                
+                $query="SELECT * FROM etudiants INNER JOIN filieres ON etudiants.filiere_id = filieres.fil_id ";
+                $st=$db->prepare($query);
+                $st->execute();
+                if($st->rowcount()!=0){
+                    $bg='#DDDDDD';
+                    echo '<tr><th bgcolor="'.$bg.'">Nom etudiant</th><th bgcolor="'.$bg.'">Prenom etudiant</th><th bgcolor="'.$bg.'">Filiere etudiant</th><th bgcolor="'.$bg.'" colspan="2" >Actions</th>';
+                    $bg='#FFFFFF';
+                    
+                    while($dt=$st->fetch()){
+                        $data = $dt['id'].';'.$dt['nom'].';'.$dt['prenom'].';'.$dt['filiere_id'].';'.$dt['filiere_nom'];
+                        echo '<tr>';
+                        echo '<td bgcolor="'.$bg.'">'.$dt['nom'].'</td><td bgcolor="'.$bg.'">'.$dt['prenom'].'</td><td bgcolor="'.$bg.'">'.$dt['filiere_nom'].'</td>';
+			            echo '<td><a href="index.php?task=modif&data='.$data.'" style="color:blue;">modifier</a></td>';
+                        echo '<td><a href="delete.php?task=supp&id='.$dt['id'].'" style="color:red;"">supprimer</a></td>';                        
+			            echo '</tr>';
+                        $bg=($bg!='#FFFFFF')? '#FFFFFF' : '#EFEFEF';
+                    }
+                }else{
+                    echo '<p class="donnee" style="padding:8px; width:35%; text-align:center; margin-left:32.5%; margin-top:10vh; color:#0e02be; font-family:Montserrat; border-radius: 10px; background-color: #f1f1f1;">aucune donnée disponible !</p>';
+                }
+            ?>
+        </table>  
+    </section>
+    <script src="./assets/script.js"></script>
 </body>
 </html>
