@@ -6,4 +6,4 @@ form h2{margin-top:5vh; font-family:'Montserrat'; color:#0e00d3;}
 form input{width:200px; padding:10px; margin:0 10px 10px 0; border:1px solid #ACACAC; border-radius:5px; }
 form input[type=submit]{width:222px;}
 form select{width:222px; padding:10px; margin:0 10px 10px 0; border:1px solid #ACACAC; border-radius:5px; }
-form #text{width:456px;}
+form #text{width:222px;}
